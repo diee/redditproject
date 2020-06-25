@@ -1,4 +1,4 @@
-package com.example.redditproject.ui
+package com.example.redditproject.ui.main
 
 import android.view.View
 import android.view.ViewGroup

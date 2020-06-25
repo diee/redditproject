@@ -32,11 +32,13 @@ allprojects {
                 lifecycleViewModel: 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0',
                 material          : 'com.google.android.material:material:1.1.0',
                 glide             : 'com.github.bumptech.glide:glide:4.11.0',
+                roomRuntime       : 'androidx.room:room-runtime:2.2.4',
                 swipeToRefresh    : 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
         ]
 
         androidKaptLibs = [
-                roomCompiler: 'androidx.room:room-compiler:2.2.4'
+                roomCompiler : 'androidx.room:room-compiler:2.2.4',
+                glideCompiler: 'com.github.bumptech.glide:compiler:4.11.0'
         ]
 
         kotlinLibs = [

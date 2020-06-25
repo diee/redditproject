@@ -1,11 +1,11 @@
-package com.example.redditproject.ui
+package com.example.redditproject.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.example.redditproject.R
-import com.example.redditproject.ui.MainViewModel.*
+import com.example.redditproject.ui.main.MainViewModel.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.androidx.viewmodel.scope.viewModel
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private fun setUpAdapter() {
         feedAdapter = FeedAdapter({})
         rvFeed?.adapter = feedAdapter
-        swipeFeed?.setOnRefreshListener { viewModel.getFeedTop() }
+        swipeFeed?.setOnRefreshListener { viewModel.refreshFeed() }
     }
 
     private fun updateUi(model: UiModel) {
