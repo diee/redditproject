@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">redditproject</string>
+    <string name="author_name">Author: %1$s</string>
+    <string name="comments_value">%1$d comments.</string>
 </resources>

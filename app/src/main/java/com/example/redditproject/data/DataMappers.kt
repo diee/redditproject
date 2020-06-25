@@ -11,6 +11,6 @@ fun ChildrenDataResponse.toDomainFeedData(): FeedData {
         thumbnail,
         comments,
         false,
-        ""
+        created
     )
 }

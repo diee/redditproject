@@ -14,5 +14,5 @@ data class ChildrenDataResponse(
     @SerializedName("author_fullname") val author: String,
     val thumbnail: String?,
     @SerializedName("num_comments") val comments: Long,
-    val created: Int
+    val created: Long
 )
