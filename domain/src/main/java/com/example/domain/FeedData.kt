@@ -7,5 +7,5 @@ data class FeedData(
     val thumbnail: String?,
     val comments: Long,
     var hasRead: Boolean = false,
-    val created: String
+    val entryDate: Long
 )
