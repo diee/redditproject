@@ -20,14 +20,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        feedAdapter = FeedAdapter({})
-        rvFeed.adapter = feedAdapter
+        setUpAdapter()
         viewModel.model.observe(this, Observer(::updateUi))
         viewModel.getFeedTop()
     }
 
+    private fun setUpAdapter() {
+        feedAdapter = FeedAdapter({})
+        rvFeed?.adapter = feedAdapter
+        swipeFeed?.setOnRefreshListener { viewModel.getFeedTop() }
+    }
+
     private fun updateUi(model: UiModel) {
         progress.visibility = if (model is UiModel.Loading) View.VISIBLE else View.GONE
+        swipeFeed?.isRefreshing = false
 
         when (model) {
             is UiModel.Content -> {
