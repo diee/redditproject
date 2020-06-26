@@ -42,6 +42,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun updateUi(model: DetailViewModel.UiModel) {
+        viewModel.setAsRead()
         with(model) {
             feedData.thumbnail?.let {
                 thumbnailUrl = it

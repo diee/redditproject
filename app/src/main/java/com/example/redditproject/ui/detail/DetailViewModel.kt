@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.FeedData
 import com.example.usecases.GetFeedDataByIdUseCase
+import com.example.usecases.ReadFeedDataUseCase
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
     private val feedId: String,
-    private val getFeedDataByIdUseCase: GetFeedDataByIdUseCase
+    private val getFeedDataByIdUseCase: GetFeedDataByIdUseCase,
+    private val readFeedDataUseCase: ReadFeedDataUseCase
 ) : ViewModel() {
 
     data class UiModel(val feedData: FeedData)
@@ -25,6 +27,12 @@ class DetailViewModel(
     private fun findFeedData() {
         viewModelScope.launch {
             _model.value = UiModel(getFeedDataByIdUseCase.invoke(feedId))
+        }
+    }
+
+    fun setAsRead() {
+        viewModelScope.launch {
+            _model.value?.feedData?.let { readFeedDataUseCase.invoke(it) }
         }
     }
 }

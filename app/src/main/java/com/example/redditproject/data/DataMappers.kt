@@ -35,7 +35,7 @@ fun FeedDataEntity.toDomainFeedData(): FeedData {
         author,
         thumbnail,
         comments,
-        false,
+        hasRead,
         entryDate
     )
 }
