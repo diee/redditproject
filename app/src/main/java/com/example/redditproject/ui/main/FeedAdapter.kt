@@ -29,7 +29,10 @@ class FeedAdapter(private val listener: (FeedData) -> Unit) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val feedData = feedList[position]
         holder.bind(feedData)
-        holder.itemView.setOnClickListener { listener(feedData) }
+        holder.itemView.setOnClickListener {
+            listener(feedData)
+            holder.itemView.ivReadStatus.setImageResource(R.drawable.ic_read)
+        }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -38,9 +41,12 @@ class FeedAdapter(private val listener: (FeedData) -> Unit) :
                 tvTitle.text = feedData.title
                 tvAuthor.text = context.getString(R.string.author_name, feedData.author)
                 tvComments.text = context.getString(R.string.comments_value, feedData.comments)
-                tvReadStatus.text = "Unread"
                 tvDate.text = this.context.getEntryTimeAgo(feedData.entryDate)
                 feedData.thumbnail?.let { url -> ivThumbnail.loadUrl(url) }
+                when (feedData.hasRead) {
+                    true -> ivReadStatus.setImageResource(R.drawable.ic_read)
+                    else -> ivReadStatus.setImageResource(R.drawable.ic_unread)
+                }
             }
         }
     }

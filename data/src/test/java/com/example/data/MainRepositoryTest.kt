@@ -4,6 +4,7 @@ import com.example.data.repository.MainRepository
 import com.example.data.source.LocalDataSource
 import com.example.data.source.RemoteDataSource
 import com.example.testshared.feedData
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
@@ -52,6 +53,18 @@ class MainRepositoryTest {
             val result = mainRepository.getFeeDataById("id_test")
 
             Assert.assertEquals(feedData, result)
+        }
+    }
+
+    @Test
+    fun `update feed data local data source`() {
+        runBlocking {
+
+            val mockedFeedData = feedData.copy()
+
+            mainRepository.update(mockedFeedData)
+
+            verify(localDataSource).updateFeedData(mockedFeedData)
         }
     }
 }

@@ -26,4 +26,6 @@ class MainRepository(
     suspend fun getFeeDataById(feedId: String): FeedData {
         return localDataSource.getFeedDataById(feedId)
     }
+
+    suspend fun update(feedData: FeedData) = localDataSource.updateFeedData(feedData)
 }

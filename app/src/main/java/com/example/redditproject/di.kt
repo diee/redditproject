@@ -14,6 +14,7 @@ import com.example.redditproject.ui.main.MainActivity
 import com.example.redditproject.ui.main.MainViewModel
 import com.example.usecases.GetFeedDataByIdUseCase
 import com.example.usecases.GetFeedUseCase
+import com.example.usecases.ReadFeedDataUseCase
 import com.example.usecases.RefreshFeedUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +51,8 @@ val scopesModule = module {
     }
 
     scope(named<DetailActivity>()) {
-        viewModel { (feedId: String) -> DetailViewModel(feedId, get()) }
+        viewModel { (feedId: String) -> DetailViewModel(feedId, get(), get()) }
         scoped { GetFeedDataByIdUseCase(get()) }
+        scoped { ReadFeedDataUseCase(get()) }
     }
 }

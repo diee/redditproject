@@ -7,4 +7,5 @@ interface LocalDataSource {
     suspend fun saveFeed(feedData: List<FeedData>)
     suspend fun getFeed(): List<FeedData>
     suspend fun getFeedDataById(feedId: String): FeedData
+    suspend fun updateFeedData(feedData: FeedData)
 }

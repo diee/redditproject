@@ -22,4 +22,8 @@ class RoomDataSource(dataBase: RedditProjectDataBase) : LocalDataSource {
 
     override suspend fun getFeedDataById(feedId: String) =
         withContext(Dispatchers.IO) { feedDataDAO.findById(feedId).toDomainFeedData() }
+
+    override suspend fun updateFeedData(feedData: FeedData) {
+        withContext(Dispatchers.IO) { feedDataDAO.updateFeed(feedData.toFeedDataEntity()) }
+    }
 }
