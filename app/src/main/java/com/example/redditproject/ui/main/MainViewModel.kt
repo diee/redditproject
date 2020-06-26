@@ -9,8 +9,10 @@ import com.example.usecases.GetFeedUseCase
 import com.example.usecases.RefreshFeedUseCase
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val getFeedUseCase: GetFeedUseCase,
-                    private val refreshFeedUseCase: RefreshFeedUseCase) : ViewModel() {
+class MainViewModel(
+    private val getFeedUseCase: GetFeedUseCase,
+    private val refreshFeedUseCase: RefreshFeedUseCase
+) : ViewModel() {
 
     private val _model = MutableLiveData<UiModel>()
     val model: LiveData<UiModel>
@@ -21,6 +23,7 @@ class MainViewModel(private val getFeedUseCase: GetFeedUseCase,
     sealed class UiModel {
         object Loading : UiModel()
         data class Content(val feed: List<FeedData>) : UiModel()
+        data class Navigation(val feedData: FeedData) : UiModel()
     }
 
     fun getFeedTop() {
@@ -30,10 +33,14 @@ class MainViewModel(private val getFeedUseCase: GetFeedUseCase,
         }
     }
 
-    fun refreshFeed(){
+    fun refreshFeed() {
         viewModelScope.launch {
             _model.value = UiModel.Loading
             _model.value = UiModel.Content(refreshFeedUseCase.invoke())
         }
+    }
+
+    fun onFeedItemClicked(feedData: FeedData) {
+        _model.value = UiModel.Navigation(feedData)
     }
 }
