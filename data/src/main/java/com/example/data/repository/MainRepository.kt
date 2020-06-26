@@ -22,4 +22,8 @@ class MainRepository(
         localDataSource.saveFeed(feed)
         return localDataSource.getFeed()
     }
+
+    suspend fun getFeeDataById(feedId: String): FeedData {
+        return localDataSource.getFeedDataById(feedId)
+    }
 }

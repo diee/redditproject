@@ -1,10 +1,12 @@
 package com.example.redditproject.ui.main
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.example.redditproject.R
+import com.example.redditproject.ui.detail.DetailActivity
 import com.example.redditproject.ui.main.MainViewModel.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.scope.lifecycleScope
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setUpAdapter() {
-        feedAdapter = FeedAdapter({})
+        feedAdapter = FeedAdapter(viewModel::onFeedItemClicked)
         rvFeed?.adapter = feedAdapter
         swipeFeed?.setOnRefreshListener { viewModel.refreshFeed() }
     }
@@ -36,9 +38,10 @@ class MainActivity : AppCompatActivity() {
         swipeFeed?.isRefreshing = false
 
         when (model) {
-            is UiModel.Content -> {
-                feedAdapter.feedList = model.feed
-            }
+            is UiModel.Content -> feedAdapter.feedList = model.feed
+            is UiModel.Navigation -> Intent(this, DetailActivity::class.java)
+                .apply { putExtra(DetailActivity.FEED_ID, model.feedData.id) }
+                .let { startActivity(it) }
         }
     }
 }

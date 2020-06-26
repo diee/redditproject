@@ -9,5 +9,5 @@ val feedData = FeedData(
     null,
     13,
     false,
-    "some date"
+    1000
 )

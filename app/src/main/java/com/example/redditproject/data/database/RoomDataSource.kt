@@ -17,7 +17,9 @@ class RoomDataSource(dataBase: RedditProjectDataBase) : LocalDataSource {
         withContext(Dispatchers.IO) { feedDataDAO.insertFeed(feedData.map { it.toFeedDataEntity() }) }
     }
 
-    override suspend fun getFeed(): List<FeedData> {
-        return withContext(Dispatchers.IO) { feedDataDAO.getAll().map { it.toDomainFeedData() } }
-    }
+    override suspend fun getFeed() =
+        withContext(Dispatchers.IO) { feedDataDAO.getAll().map { it.toDomainFeedData() } }
+
+    override suspend fun getFeedDataById(feedId: String) =
+        withContext(Dispatchers.IO) { feedDataDAO.findById(feedId).toDomainFeedData() }
 }
