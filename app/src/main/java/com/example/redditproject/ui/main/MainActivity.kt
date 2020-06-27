@@ -11,8 +11,9 @@ import androidx.lifecycle.Observer
 import com.example.redditproject.R
 import com.example.redditproject.common.listenLastItemReached
 import com.example.redditproject.ui.detail.DetailActivity
+import com.example.redditproject.ui.detail.DetailFragment
 import com.example.redditproject.ui.main.MainViewModel.UiModel
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.feed_list_component.*
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.androidx.viewmodel.scope.viewModel
 
@@ -21,11 +22,13 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by lifecycleScope.viewModel(this)
 
     private lateinit var feedAdapter: FeedAdapter
+    private var isDualPane: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        isDualPane = detailContainer != null
         setUpAdapter()
         viewModel.model.observe(this, Observer(::updateUi))
         viewModel.getFeedTop()
@@ -55,15 +58,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUi(model: UiModel) {
-        progress.visibility = if (model is UiModel.Loading) View.VISIBLE else View.GONE
+        progress?.visibility = if (model is UiModel.Loading) View.VISIBLE else View.GONE
         swipeFeed?.isRefreshing = false
 
         when (model) {
             is UiModel.Content -> feedAdapter.feedList = model.feed.toMutableList()
-            is UiModel.Navigation -> Intent(this, DetailActivity::class.java)
-                .apply { putExtra(DetailActivity.FEED_ID, model.feedData.id) }
-                .let { startActivity(it) }
+            is UiModel.Navigation -> navigateToDetail(model.feedData.id)
             is UiModel.DismissAll -> feedAdapter.clear()
+        }
+    }
+
+    private fun navigateToDetail(feedId: String) {
+        if (isDualPane) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.detailContainer, DetailFragment.newInstance(feedId))
+                .commit()
+        } else {
+            Intent(this, DetailActivity::class.java)
+                .apply { putExtra(DetailFragment.FEED_ID, feedId) }
+                .let { startActivity(it) }
         }
     }
 
