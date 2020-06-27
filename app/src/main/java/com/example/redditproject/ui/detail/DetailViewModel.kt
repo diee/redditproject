@@ -2,18 +2,19 @@ package com.example.redditproject.ui.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.domain.FeedData
+import com.example.redditproject.common.ScopedViewModel
 import com.example.usecases.GetFeedDataByIdUseCase
 import com.example.usecases.ReadFeedDataUseCase
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
     private val feedId: String,
     private val getFeedDataByIdUseCase: GetFeedDataByIdUseCase,
-    private val readFeedDataUseCase: ReadFeedDataUseCase
-) : ViewModel() {
+    private val readFeedDataUseCase: ReadFeedDataUseCase,
+    uiDispatcher: CoroutineDispatcher
+) : ScopedViewModel(uiDispatcher) {
 
     data class UiModel(val feedData: FeedData)
 
@@ -25,14 +26,14 @@ class DetailViewModel(
         }
 
     private fun findFeedData() {
-        viewModelScope.launch {
+        launch {
             _model.value = UiModel(getFeedDataByIdUseCase.invoke(feedId))
         }
     }
 
-    fun setAsRead() {
-        viewModelScope.launch {
-            _model.value?.feedData?.let { readFeedDataUseCase.invoke(it) }
+    fun setAsRead(feedData: FeedData) {
+        launch {
+            readFeedDataUseCase.invoke(feedData)
         }
     }
 }

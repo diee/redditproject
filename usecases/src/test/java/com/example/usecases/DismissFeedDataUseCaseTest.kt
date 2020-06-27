@@ -3,7 +3,6 @@ package com.example.usecases
 import com.example.data.repository.MainRepository
 import com.example.testshared.feedData
 import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before

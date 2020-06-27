@@ -8,7 +8,7 @@ import com.example.redditproject.data.database.RedditProjectDataBase
 import com.example.redditproject.data.database.RoomDataSource
 import com.example.redditproject.data.server.RedditDataSource
 import com.example.redditproject.data.server.RedditNetwork
-import com.example.redditproject.ui.detail.DetailActivity
+import com.example.redditproject.ui.detail.DetailFragment
 import com.example.redditproject.ui.detail.DetailViewModel
 import com.example.redditproject.ui.main.MainActivity
 import com.example.redditproject.ui.main.MainViewModel
@@ -42,14 +42,14 @@ val dataModule = module {
 
 val scopesModule = module {
     scope(named<MainActivity>()) {
-        viewModel { MainViewModel(get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get()) }
         scoped { GetFeedUseCase(get()) }
         scoped { DismissFeedDataUseCase(get()) }
         scoped { DismissAllFeedUseCase(get()) }
     }
 
-    scope(named<DetailActivity>()) {
-        viewModel { (feedId: String) -> DetailViewModel(feedId, get(), get()) }
+    scope(named<DetailFragment>()) {
+        viewModel { (feedId: String) -> DetailViewModel(feedId, get(), get(), get()) }
         scoped { GetFeedDataByIdUseCase(get()) }
         scoped { ReadFeedDataUseCase(get()) }
     }

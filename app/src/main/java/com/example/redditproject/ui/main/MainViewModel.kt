@@ -2,21 +2,23 @@ package com.example.redditproject.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.domain.FeedData
-import com.example.redditproject.ui.main.MainActivity.*
-import com.example.redditproject.ui.main.MainActivity.ClickActionType.*
+import com.example.redditproject.common.ScopedViewModel
+import com.example.redditproject.ui.main.MainActivity.ClickActionType
+import com.example.redditproject.ui.main.MainActivity.ClickActionType.DISMISS_FEED
+import com.example.redditproject.ui.main.MainActivity.ClickActionType.OPEN_DETAIL
 import com.example.usecases.DismissAllFeedUseCase
 import com.example.usecases.DismissFeedDataUseCase
 import com.example.usecases.GetFeedUseCase
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val getFeedUseCase: GetFeedUseCase,
     private val dismissFeedDataUseCase: DismissFeedDataUseCase,
-    private val dismissAllFeedUseCase: DismissAllFeedUseCase
-) : ViewModel() {
+    private val dismissAllFeedUseCase: DismissAllFeedUseCase,
+    uiDispatcher: CoroutineDispatcher
+) : ScopedViewModel(uiDispatcher) {
 
     private val _model = MutableLiveData<UiModel>()
     val model: LiveData<UiModel>
@@ -32,7 +34,7 @@ class MainViewModel(
     }
 
     fun getFeedTop() {
-        viewModelScope.launch {
+        launch {
             _model.value = UiModel.Loading
             _model.value = UiModel.Content(getFeedUseCase.invoke())
         }
@@ -46,13 +48,13 @@ class MainViewModel(
     }
 
     private fun dismissFeedData(feedData: FeedData) {
-        viewModelScope.launch {
+        launch {
             dismissFeedDataUseCase.invoke(feedData)
         }
     }
 
     fun dismissAll() {
-        viewModelScope.launch {
+        launch {
             dismissAllFeedUseCase.invoke()
             _model.value = UiModel.DismissAll
         }
