@@ -2,6 +2,7 @@ package com.example.usecases
 
 import com.example.data.repository.MainRepository
 import com.example.testshared.feedData
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
@@ -12,29 +13,23 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class GetFeedUseCaseTest {
+class DismissAllFeedUseCaseTest {
 
     @Mock
     lateinit var mainRepository: MainRepository
 
-    lateinit var getFeedUseCase: GetFeedUseCase
+    lateinit var dismissAllFeedUseCase: DismissAllFeedUseCase
 
     @Before
     fun setUp() {
-        getFeedUseCase = GetFeedUseCase(mainRepository)
+        dismissAllFeedUseCase = DismissAllFeedUseCase(mainRepository)
     }
 
     @Test
     fun `invoke use case call`() {
         runBlocking {
-
-            val mockFeedData = listOf(feedData.copy())
-            whenever(mainRepository.getFeedTop()).thenReturn(mockFeedData)
-
-            val result = getFeedUseCase.invoke()
-
-            Assert.assertEquals(mockFeedData, result)
+            dismissAllFeedUseCase.invoke()
+            verify(mainRepository).dismissAll()
         }
     }
-
 }

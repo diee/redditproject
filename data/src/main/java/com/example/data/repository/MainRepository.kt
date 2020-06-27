@@ -28,4 +28,6 @@ class MainRepository(
     }
 
     suspend fun update(feedData: FeedData) = localDataSource.updateFeedData(feedData)
+
+    suspend fun dismissAll() = localDataSource.dismissAll()
 }

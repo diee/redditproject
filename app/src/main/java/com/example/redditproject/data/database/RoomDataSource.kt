@@ -13,9 +13,8 @@ class RoomDataSource(dataBase: RedditProjectDataBase) : LocalDataSource {
 
     override suspend fun isEmpty() = withContext(Dispatchers.IO) { feedDataDAO.feedCount() <= 0 }
 
-    override suspend fun saveFeed(feedData: List<FeedData>) {
+    override suspend fun saveFeed(feedData: List<FeedData>) =
         withContext(Dispatchers.IO) { feedDataDAO.insertFeed(feedData.map { it.toFeedDataEntity() }) }
-    }
 
     override suspend fun getFeed() =
         withContext(Dispatchers.IO) { feedDataDAO.getAll().map { it.toDomainFeedData() } }
@@ -23,7 +22,10 @@ class RoomDataSource(dataBase: RedditProjectDataBase) : LocalDataSource {
     override suspend fun getFeedDataById(feedId: String) =
         withContext(Dispatchers.IO) { feedDataDAO.findById(feedId).toDomainFeedData() }
 
-    override suspend fun updateFeedData(feedData: FeedData) {
+    override suspend fun updateFeedData(feedData: FeedData) =
         withContext(Dispatchers.IO) { feedDataDAO.updateFeed(feedData.toFeedDataEntity()) }
-    }
+
+    override suspend fun dismissAll() = withContext(Dispatchers.IO) { feedDataDAO.dismissAll() }
+
+    override suspend fun cleanFeed() = withContext(Dispatchers.IO) { feedDataDAO.deleteAll() }
 }

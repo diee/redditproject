@@ -12,10 +12,7 @@ import com.example.redditproject.ui.detail.DetailActivity
 import com.example.redditproject.ui.detail.DetailViewModel
 import com.example.redditproject.ui.main.MainActivity
 import com.example.redditproject.ui.main.MainViewModel
-import com.example.usecases.GetFeedDataByIdUseCase
-import com.example.usecases.GetFeedUseCase
-import com.example.usecases.ReadFeedDataUseCase
-import com.example.usecases.RefreshFeedUseCase
+import com.example.usecases.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import org.koin.android.ext.koin.androidContext
@@ -45,9 +42,11 @@ val dataModule = module {
 
 val scopesModule = module {
     scope(named<MainActivity>()) {
-        viewModel { MainViewModel(get(), get()) }
+        viewModel { MainViewModel(get(), get(), get(), get()) }
         scoped { GetFeedUseCase(get()) }
         scoped { RefreshFeedUseCase(get()) }
+        scoped { DismissFeedDataUseCase(get()) }
+        scoped { DismissAllFeedUseCase(get()) }
     }
 
     scope(named<DetailActivity>()) {
