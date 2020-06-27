@@ -3,6 +3,9 @@ package com.example.redditproject.ui.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
 import com.example.redditproject.R
@@ -27,6 +30,22 @@ class MainActivity : AppCompatActivity() {
         viewModel.getFeedTop()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.dismissAll -> {
+                viewModel.dismissAll()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     private fun setUpAdapter() {
         feedAdapter = FeedAdapter(viewModel::onFeedItemClicked)
         rvFeed?.adapter = feedAdapter
@@ -38,10 +57,15 @@ class MainActivity : AppCompatActivity() {
         swipeFeed?.isRefreshing = false
 
         when (model) {
-            is UiModel.Content -> feedAdapter.feedList = model.feed
+            is UiModel.Content -> feedAdapter.feedList = model.feed.toMutableList()
             is UiModel.Navigation -> Intent(this, DetailActivity::class.java)
                 .apply { putExtra(DetailActivity.FEED_ID, model.feedData.id) }
                 .let { startActivity(it) }
+            is UiModel.DismissAll -> feedAdapter.clear()
         }
+    }
+
+    enum class ClickActionType {
+        OPEN_DETAIL, DISMISS_FEED
     }
 }

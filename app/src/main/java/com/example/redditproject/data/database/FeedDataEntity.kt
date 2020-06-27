@@ -11,5 +11,6 @@ data class FeedDataEntity(
     val thumbnail: String?,
     val comments: Long,
     var hasRead: Boolean = false,
-    val entryDate: Long
+    val entryDate: Long,
+    val dismissed: Boolean = false
 )

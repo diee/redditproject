@@ -12,7 +12,8 @@ fun ChildrenDataResponse.toDomainFeedData(): FeedData {
         thumbnail,
         comments,
         false,
-        created
+        created,
+        false
     )
 }
 
@@ -24,7 +25,8 @@ fun FeedData.toFeedDataEntity(): FeedDataEntity {
         thumbnail,
         comments,
         hasRead,
-        entryDate
+        entryDate,
+        dismissed
     )
 }
 
@@ -36,6 +38,7 @@ fun FeedDataEntity.toDomainFeedData(): FeedData {
         thumbnail,
         comments,
         hasRead,
-        entryDate
+        entryDate,
+        dismissed
     )
 }

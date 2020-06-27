@@ -9,13 +9,16 @@ import com.example.redditproject.common.basicDiffUtil
 import com.example.redditproject.common.getEntryTimeAgo
 import com.example.redditproject.common.inflate
 import com.example.redditproject.common.loadUrl
+import com.example.redditproject.ui.main.MainActivity.*
+import com.example.redditproject.ui.main.MainActivity.ClickActionType.DISMISS_FEED
+import com.example.redditproject.ui.main.MainActivity.ClickActionType.OPEN_DETAIL
 import kotlinx.android.synthetic.main.feed_item.view.*
 
-class FeedAdapter(private val listener: (FeedData) -> Unit) :
+class FeedAdapter(private val listener: (FeedData, ClickActionType) -> Unit) :
     RecyclerView.Adapter<FeedAdapter.ViewHolder>() {
 
-    var feedList: List<FeedData> by basicDiffUtil(
-        emptyList(),
+    var feedList: MutableList<FeedData> by basicDiffUtil(
+        mutableListOf(),
         areItemsTheSame = { old, new -> old.id == new.id }
     )
 
@@ -30,9 +33,21 @@ class FeedAdapter(private val listener: (FeedData) -> Unit) :
         val feedData = feedList[position]
         holder.bind(feedData)
         holder.itemView.setOnClickListener {
-            listener(feedData)
+            listener(feedData, OPEN_DETAIL)
             holder.itemView.ivReadStatus.setImageResource(R.drawable.ic_read)
         }
+        holder.itemView.ivDismiss.setOnClickListener {
+            listener(feedData, DISMISS_FEED)
+            feedList.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, feedList.count())
+        }
+    }
+
+    fun clear() {
+        val size = feedList.size
+        feedList.clear()
+        notifyItemRangeRemoved(0, size)
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
