@@ -42,9 +42,8 @@ val dataModule = module {
 
 val scopesModule = module {
     scope(named<MainActivity>()) {
-        viewModel { MainViewModel(get(), get(), get(), get()) }
+        viewModel { MainViewModel(get(), get(), get()) }
         scoped { GetFeedUseCase(get()) }
-        scoped { RefreshFeedUseCase(get()) }
         scoped { DismissFeedDataUseCase(get()) }
         scoped { DismissAllFeedUseCase(get()) }
     }

@@ -10,12 +10,10 @@ import com.example.redditproject.ui.main.MainActivity.ClickActionType.*
 import com.example.usecases.DismissAllFeedUseCase
 import com.example.usecases.DismissFeedDataUseCase
 import com.example.usecases.GetFeedUseCase
-import com.example.usecases.RefreshFeedUseCase
 import kotlinx.coroutines.launch
 
 class MainViewModel(
     private val getFeedUseCase: GetFeedUseCase,
-    private val refreshFeedUseCase: RefreshFeedUseCase,
     private val dismissFeedDataUseCase: DismissFeedDataUseCase,
     private val dismissAllFeedUseCase: DismissAllFeedUseCase
 ) : ViewModel() {
@@ -37,13 +35,6 @@ class MainViewModel(
         viewModelScope.launch {
             _model.value = UiModel.Loading
             _model.value = UiModel.Content(getFeedUseCase.invoke())
-        }
-    }
-
-    fun refreshFeed() {
-        viewModelScope.launch {
-            _model.value = UiModel.Loading
-            _model.value = UiModel.Content(refreshFeedUseCase.invoke())
         }
     }
 

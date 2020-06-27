@@ -34,7 +34,6 @@ class MainRepositoryTest {
     fun `get feed from local data source first`() {
         runBlocking {
             val mockFeedData = listOf(feedData.copy())
-            whenever(localDataSource.isEmpty()).thenReturn(false)
             whenever(localDataSource.getFeed()).thenReturn(mockFeedData)
 
             val result = mainRepository.getFeedTop()
