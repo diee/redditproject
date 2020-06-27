@@ -49,3 +49,7 @@ fun Context.getEntryTimeAgo(time: Long): String {
 fun ImageView.loadUrl(url: String) {
     Glide.with(context).load(url).error(R.drawable.ic_empty_image).into(this)
 }
+
+fun RecyclerView.listenLastItemReached(lastItemReached: () -> Unit) {
+    this.setOnScrollChangeListener { _, _, _, _, _ -> if (!this.canScrollVertically(1)) lastItemReached() }
+}

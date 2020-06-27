@@ -1,16 +1,17 @@
 package com.example.redditproject.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.example.redditproject.R
+import com.example.redditproject.common.listenLastItemReached
 import com.example.redditproject.ui.detail.DetailActivity
-import com.example.redditproject.ui.main.MainViewModel.*
+import com.example.redditproject.ui.main.MainViewModel.UiModel
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.scope.lifecycleScope
 import org.koin.androidx.viewmodel.scope.viewModel
@@ -49,7 +50,8 @@ class MainActivity : AppCompatActivity() {
     private fun setUpAdapter() {
         feedAdapter = FeedAdapter(viewModel::onFeedItemClicked)
         rvFeed?.adapter = feedAdapter
-        swipeFeed?.setOnRefreshListener { viewModel.refreshFeed() }
+        swipeFeed?.setOnRefreshListener { viewModel.getFeedTop() }
+        rvFeed?.listenLastItemReached { viewModel.getFeedTop() }
     }
 
     private fun updateUi(model: UiModel) {

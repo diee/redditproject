@@ -11,7 +11,7 @@ data class DataResponse(@SerializedName("data") val dataResponse: ChildrenDataRe
 data class ChildrenDataResponse(
     val id: String,
     val title: String,
-    @SerializedName("author_fullname") val author: String,
+    val author: String,
     val thumbnail: String?,
     @SerializedName("num_comments") val comments: Long,
     val created: Long

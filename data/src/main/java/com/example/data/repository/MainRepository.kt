@@ -10,14 +10,6 @@ class MainRepository(
 ) {
 
     suspend fun getFeedTop(): List<FeedData> {
-        if (localDataSource.isEmpty()) {
-            val feed = remoteDataSource.getFeedTop()
-            localDataSource.saveFeed(feed)
-        }
-        return localDataSource.getFeed()
-    }
-
-    suspend fun refreshFeed(): List<FeedData> {
         val feed = remoteDataSource.getFeedTop()
         localDataSource.saveFeed(feed)
         return localDataSource.getFeed()
